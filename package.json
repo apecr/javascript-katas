@@ -1,0 +1,22 @@
+{
+  "name": "javascript-katas",
+  "version": "0.0.0",
+  "description": "Javascript katas from https://www.codewars.com/",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -u bdd --recursive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/apecr/javascript-katas.git"
+  },
+  "keywords": [
+    "npm-library"
+  ],
+  "author": "Alberto Eyo <alberto.eyo@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/apecr/javascript-katas/issues"
+  },
+  "homepage": "https://github.com/apecr/javascript-katas#readme"
+}
