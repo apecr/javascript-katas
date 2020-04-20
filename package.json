@@ -4,7 +4,11 @@
   "description": "Javascript katas from https://www.codewars.com/",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -u bdd --recursive"
+    "deps": "npm install",
+    "test": "./node_modules/istanbul/lib/cli.js cover ./node_modules/.bin/_mocha",
+    "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
+    "coverage": "node_modules/.bin/istanbul cover --report lcovonly --report html --dir coverage ./node_modules/.bin/_mocha",
+    "sonar": "sonar-scanner"
   },
   "repository": {
     "type": "git",
@@ -21,6 +25,8 @@
   "homepage": "https://github.com/apecr/javascript-katas#readme",
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^7.1.1"
+    "mocha": "^7.1.1",
+    "coveralls": "^3.0.1",
+    "istanbul": "^0.4.5"
   }
 }

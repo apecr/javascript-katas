@@ -1,0 +1,26 @@
+language: node_js
+node_js:
+  - "stable"
+  - "6.9.5"
+  - "8.5.0"
+  - "9.5.0"
+  - "10.1.0"
+after_success: 'npm run coveralls'
+
+dist: trusty
+sudo: required
+
+addons:
+  sonarcloud:
+    organization: "apecr-github"
+    token:
+      secure: "JUzyKk8ajQZ07k5L+e9KREV/NymWc0oL9ct5495sckdsiwLO087h+DDKLrjyt+gqdL07MGROoh7WFOh4fYhN+iZfCzgYJ6bTgFwJ1NJ7XcEw4dus67I5pSuFZtFmTn/4lGtKqJHs66lHbU6uXxkxUk6i+VoNTv9vjjt9dfj2SVafSHxLVSwdByEIcUCgfFkitBJI8sxCqv34LQamQpu4JPMQbOuOdLRYy8BWKk2FCnJZlrVaflql/8Rdv5v1iFOgShhWIFA+pnkoZoDDYEW3AYfpDdCveKVLBSuczYth8Nc/VnYxY0i5mYzpx4QeNu5Ty4dqfdKhyYA3FHNGKX3mYSp3Xu282z4w0KMXdM61Ky4+v3xIyQQLYiaqdTmtvroAA2UIDGBuaSBzgo8mmDkDyiP3Xsmd7TIlQ/G9E+msxRTu7UKAVsmzHiRK65SR31BFFMEMvoE3mm5ZcDg6WTVJk3Nhc3WS8pNLoGcCR8i0uzENM57UGxGF78Kf/HgyMcwxYmJb9tTibclMb/+ITCm7OfcCTTrYHnsu09fTfd47MVp/lU6NOjOGRde42kR294Giel39uLF8pSTNTYdKocanabOcOgl42l0sqMe8Prez8aDqX5z2E7Q7X1cZb1I5wsq7m/3FYSdOaUk5rHtWrlSmNS1Pzm3KTTAuLc/8O+00+L8="
+jdk:
+  - oraclejdk8
+script:
+  - npm test
+  - npm run coveralls
+  - sonar-scanner
+cache:
+  directories:
+    - '$HOME/.sonar/cache'
