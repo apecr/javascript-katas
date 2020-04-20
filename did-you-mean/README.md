@@ -1,4 +1,4 @@
-## 5 kyu Did you mean ...?
+## 5 kyu [Did you mean ...?][1]
 
 I'm sure, you know Google's "Did you mean ...?", when you entered a search term and mistyped a word. In this kata we want to implement something similar.
 
@@ -28,3 +28,5 @@ I know, many of you would disagree that java is more similar to heaven than all 
 Additional notes:
 
 * there is always exactly one possible correct solution
+
+[1]: https://www.codewars.com/kata/5259510fc76e59579e0009d4/train/javascript

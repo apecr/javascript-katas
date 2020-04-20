@@ -2,105 +2,137 @@ function Dictionary(words) {
   this.words = words
 }
 
-const deletedLetters = (term, word) => {
-  const termArray = term.split('')
-  const wordArray = word.split('')
-  let distance = 0
-  let outArray = []
-  let diff = []
-  termArray.forEach(letterTerm => {
-    if (!wordArray.includes(letterTerm)) {
-      distance++
-      diff.push(letterTerm)
+
+const getDistance = (termArray, wordArray) => {
+  const out = {
+    distance: 0,
+    outArray: [],
+    deleted: 0,
+    added: 0,
+    replaced: 0
+  }
+  const indexesFromTerm = new Array(termArray.length).fill({
+    replaced: false
+  })
+  wordArray.forEach((w, index) => {
+    if (w !== '1') {
+      if (termArray[index] === w) {
+        out.outArray[index] = w
+      } else if (termArray.indexOf(w) !== -1 && !indexesFromTerm[termArray.indexOf(w)].replaced) {
+        out.outArray[index] = w
+        out.distance++
+        out.replaced++
+        indexesFromTerm[termArray.indexOf(w)] = {replaced: true}
+        termArray[termArray.indexOf(w)] = undefined // De esta forma no volvera a aparecer en la busqueda
+      } else {
+        if (termArray.length < index + 1) {
+          out.outArray[index] = w
+          out.distance++
+          out.added++
+        } else {
+          out.outArray[index] = w
+          out.distance += 2
+          out.added++
+          out.deleted++
+          if (termArray[index] === '1') {
+            out.deleted--
+            out.distance--
+          }
+        }
+      }
     } else {
-      wordArray.splice(wordArray.indexOf(letterTerm), 1)
-      outArray.push(letterTerm)
+      out.deleted++
+      out.distance++
     }
   })
-  return {
-    distance,
-    in: term,
-    word,
-    diff: diff.join(''),
-    out: outArray.join('')
-  }
+  const excedDistance = termArray.length - wordArray.length
+  out.distance = excedDistance > 0 ? out.distance + excedDistance : out.distance
+  out.deleted = excedDistance > 0 ? out.deleted + excedDistance : out.deleted
+  return out
 }
 
-const includedLetters = (term, word) => {
-  let distance = 0
-  const termArray = term.split('')
-  const wordArray = word.split('')
-  let outArray = new Array(wordArray.length)
-  let diff = []
-  termArray.forEach((t, index) => {
-    outArray.splice(index, 0, t)
-  })
-  wordArray.forEach((letterWord, index) => {
-    if (termArray.includes(letterWord)) {
-      termArray.splice(termArray.indexOf(letterWord), 1)
+const rotate = array => {
+  return array.reduce((acc, val, index) => {
+    if (index === array.length - 1) {
+      acc[0] = val
     } else {
-      distance++
-      outArray.splice(index, 0, letterWord)
-      diff.push(letterWord)
+      acc[index + 1] = val
     }
-  })
-  return {
-    distance,
-    in: term,
-    word,
-    diff: diff.join(''),
-    out: outArray.join('')
-  }
+    return acc
+  }, [])
 }
 
-const replacedLetters = (term, word) => {
-  let distance = 0
+const countCoincidences = (arr1, arr2) => {
+  return arr1.reduce((acc, e, index) => {
+    if (arr2[index] === e) {
+      return acc + 1
+    }
+    return acc
+  }, 0)
+}
+
+const prepare = (term, word) => {
   const termArray = term.split('')
   const wordArray = word.split('')
-  let diff = []
-  termArray.forEach((termLetter, index) => {
-    if (termLetter !== wordArray[index]) {
-      distance++
-      diff.push(termLetter)
-    }
-  })
 
-  return {
-    distance,
-    in: term,
-    word,
-    diff: diff.join(''),
-    out: word
+  if (termArray.length > wordArray.length) {
+    const fill = new Array(termArray.length - wordArray.length).fill('1')
+    wordArray.push(...fill)
+    return [wordArray, termArray]
+  } else {
+    const fill = new Array(wordArray.length - termArray.length).fill('1')
+    termArray.push(...fill)
+    return [termArray, wordArray]
   }
 }
+
+const getRotatedWithOnes = array => array.includes('1') ? rotate(array) : array
 
 const distance = (term, word) => {
-  const distanceDeleted = deletedLetters(term, word)
-  console.log(distanceDeleted)
-  const distanceIncluded = includedLetters(distanceDeleted.out, word)
-  console.log(distanceIncluded)
-  const distanceReplaced = replacedLetters(distanceIncluded.out, word)
-  console.log(distanceReplaced)
-  console.log(`Distance from ${term} to ${word}: `)
-  console.log(distanceDeleted.distance + distanceIncluded.distance + distanceReplaced.distance)
-  return distanceDeleted.distance + distanceIncluded.distance + distanceReplaced.distance
+  const [termArray, wordArray] = prepare(term, word)
+
+  const numberOnes = termArray.filter(e => e === '1')
+  let termRotated = termArray
+
+  const betterTerm = numberOnes.reduce((acc) => {
+    const coincidences = countCoincidences(termRotated, wordArray)
+    if (acc.coincidences < coincidences) {
+      return {
+        coincidences,
+        termArray: termRotated,
+        wordArray
+      }
+    }
+    termRotated = getRotatedWithOnes(termRotated)
+    return acc
+  }, {coincidences: 0, termArray, wordArray})
+  return getDistance(betterTerm.termArray, wordArray).distance
 }
 
 Dictionary.prototype.findMostSimilar = function(term) {
-  const reduced = this.words.reduce((acc, word, index) => {
-    const distan = distance(term, word)
-    if (distan < acc.distance) {
-      acc.distance = distan
-      acc.index = index
+  const reduced = this.words.reduce(
+    (acc, word, index) => {
+      const distan = distance(term, word)
+      if (distan < acc.distance) {
+        acc.distance = distan
+        acc.index = index
+        return acc
+      }
+      if (acc.index === -1) {
+        acc.distance = distan
+        acc.index = index
+      }
       return acc
-    }
-    if (acc.index === -1) {
-      acc.distance = distan
-      acc.index = index
-    }
-    return acc
-  }, {distance: 0, index: -1})
+    },
+    { distance: 0, index: -1 }
+  )
   return this.words[reduced.index]
 }
 
-module.exports = {Dictionary, deletedLetters, includedLetters, replacedLetters}
+module.exports = {
+  Dictionary,
+  getDistance,
+  prepare,
+  distance,
+  rotar: rotate
+}
