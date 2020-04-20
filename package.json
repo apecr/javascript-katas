@@ -1,6 +1,6 @@
 {
   "name": "javascript-katas",
-  "version": "0.1.0-beta.0",
+  "version": "0.1.0-beta.1",
   "description": "Javascript katas from https://www.codewars.com/",
   "main": "index.js",
   "scripts": {
