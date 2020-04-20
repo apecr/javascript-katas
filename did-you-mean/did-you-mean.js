@@ -15,35 +15,36 @@ const getDistance = (termArray, wordArray) => {
     replaced: false
   })
   wordArray.forEach((w, index) => {
-    if (w !== '1') {
-      if (termArray[index] === w) {
-        out.outArray[index] = w
-      } else if (termArray.indexOf(w) !== -1 && !indexesFromTerm[termArray.indexOf(w)].replaced) {
+    // if (w !== '1') {
+    if (termArray[index] === w) {
+      out.outArray[index] = w
+    } else if (termArray.indexOf(w) !== -1 && !indexesFromTerm[termArray.indexOf(w)].replaced) {
+      out.outArray[index] = w
+      out.distance++
+      out.replaced++
+      indexesFromTerm[termArray.indexOf(w)] = {replaced: true}
+      termArray[termArray.indexOf(w)] = undefined // De esta forma no volvera a aparecer en la busqueda
+    } else {
+      if (termArray.length < index + 1) {
         out.outArray[index] = w
         out.distance++
-        out.replaced++
-        indexesFromTerm[termArray.indexOf(w)] = {replaced: true}
-        termArray[termArray.indexOf(w)] = undefined // De esta forma no volvera a aparecer en la busqueda
+        out.added++
       } else {
-        if (termArray.length < index + 1) {
-          out.outArray[index] = w
-          out.distance++
-          out.added++
-        } else {
-          out.outArray[index] = w
-          out.distance += 2
-          out.added++
-          out.deleted++
-          if (termArray[index] === '1') {
-            out.deleted--
-            out.distance--
-          }
+        out.outArray[index] = w
+        out.distance += 2
+        out.added++
+        out.deleted++
+        if (termArray[index] === '1') {
+          out.deleted--
+          out.distance--
         }
       }
-    } else {
-      out.deleted++
-      out.distance++
     }
+
+    // } else {
+    //   out.deleted++
+    //   out.distance++
+    // }
   })
   const excedDistance = termArray.length - wordArray.length
   out.distance = excedDistance > 0 ? out.distance + excedDistance : out.distance
