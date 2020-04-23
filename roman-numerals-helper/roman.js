@@ -48,7 +48,7 @@ const RomanNumerals = {
         if (element === units[unit].u || element === units[unit].u5) {
           agrupation = agrupation ? element + agrupation : element
         } else if (i < romanArrayReversed.length && element === units[unit].u10 && romanArrayReversed[i + 1] === units[unit].u) {
-          agrupation = agrupation ? element + agrupation : element
+          agrupation = element
         } else {
           const generalTransform = getGeneralTransform(unit)
           const numberForAgrupation = Object.keys(generalTransform).filter((key) => generalTransform[key] === agrupation)[0]
