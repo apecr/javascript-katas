@@ -25,6 +25,10 @@ const getRomanFromNumberUnit = (number, unitPosition) => {
   return getGeneralTransform(unitPosition)[number]
 }
 
+const getNumber = (generalTransform, agrupation) => {
+  return Object.keys(generalTransform).filter((key) => generalTransform[key] === agrupation)[0]
+}
+
 const RomanNumerals = {
   toRoman: (number) => {
     return number
@@ -51,7 +55,7 @@ const RomanNumerals = {
           agrupation = element
         } else {
           const generalTransform = getGeneralTransform(unit)
-          const numberForAgrupation = Object.keys(generalTransform).filter((key) => generalTransform[key] === agrupation)[0]
+          const numberForAgrupation = getNumber(generalTransform, agrupation)
           const totalAgrupation = numberForAgrupation ? numberForAgrupation * Math.pow(10, unit) : 0
           agrupation = undefined
           unit++

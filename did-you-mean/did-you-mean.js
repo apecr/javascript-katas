@@ -15,7 +15,6 @@ const getDistance = (termArray, wordArray) => {
     replaced: false
   })
   wordArray.forEach((w, index) => {
-    // if (w !== '1') {
     if (termArray[index] === w) {
       out.outArray[index] = w
     } else if (termArray.indexOf(w) !== -1 && !indexesFromTerm[termArray.indexOf(w)].replaced) {
@@ -40,11 +39,6 @@ const getDistance = (termArray, wordArray) => {
         }
       }
     }
-
-    // } else {
-    //   out.deleted++
-    //   out.distance++
-    // }
   })
   const excedDistance = termArray.length - wordArray.length
   out.distance = excedDistance > 0 ? out.distance + excedDistance : out.distance
@@ -87,8 +81,6 @@ const prepare = (term, word) => {
   }
 }
 
-const getRotatedWithOnes = array => array.includes('1') ? rotate(array) : array
-
 const distance = (term, word) => {
   const [termArray, wordArray] = prepare(term, word)
 
@@ -104,7 +96,7 @@ const distance = (term, word) => {
         wordArray
       }
     }
-    termRotated = getRotatedWithOnes(termRotated)
+    termRotated = rotate(termRotated)
     return acc
   }, {coincidences: 0, termArray, wordArray})
   return getDistance(betterTerm.termArray, wordArray).distance
