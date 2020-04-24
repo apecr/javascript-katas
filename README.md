@@ -18,6 +18,11 @@ Create a RomanNumerals class that can convert a roman numeral to and from an int
 
 Your task is to implement a function that calculates an election winner from a list of voter selections using an Instant Runoff Voting algorithm.
 
+## [Simple Events][4]
+
+Your goal is to write an Event constructor function, which can be used to make event objects.
+
 [1]: https://www.codewars.com/kata/5259510fc76e59579e0009d4/train/javascript
 [2]: https://www.codewars.com/kata/51b66044bce5799a7f000003/train/javascript
 [3]: https://www.codewars.com/kata/52996b5c99fdcb5f20000004/train/javascript
+[4]: https://www.codewars.com/kata/52d3b68215be7c2d5300022f
