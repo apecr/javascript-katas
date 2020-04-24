@@ -124,8 +124,10 @@ undefined],
 'a']]
 describe('Basic tests', () => {
   testCases.map((test, index) => {
-    it(`Should match, test case ${index}`, () => {
-      expect(runoff(testCases[index][0])).to.be.deep.equal(testCases[index][1])
-    })
+    if (index < 100) {
+      it(`Should match, test case ${index}`, () => {
+        expect(runoff(testCases[index][0])).to.be.deep.equal(testCases[index][1])
+      })
+    }
   })
 })
