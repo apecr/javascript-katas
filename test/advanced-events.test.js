@@ -24,6 +24,45 @@ describe('Test events (simple tests)', () => {
   })
 })
 
+describe('Should exist an advanced event', () => {
+  it('Should have a .subscribe() and .unsubscribe method', () => {
+    const e = new Event()
+    expect(e.subscribe).to.be.a('function')
+    expect(e.unsubscribe).to.be.a('function')
+  })
+  describe('Should accept invalid parameters', () => {
+    const f1 = (arr) => (arr.push(1))
+    const f2 = (arr) => (arr.push(2))
+    it('Should accept not functions parameters in subscribe', () => {
+      const e = new Event()
+      e.subscribe(f1, f2, undefined)
+      const arrTest = []
+      e.emit(arrTest)
+      expect(arrTest).to.be.deep.equal([1, 2])
+    })
+    it('Should accept not functions parameters in unsubscribe', () => {
+      const e = new Event()
+      e.subscribe(f1, f2, undefined)
+      const arrTest = []
+      e.emit(arrTest)
+      e.unsubscribe(null, f2)
+      e.emit(arrTest)
+      expect(arrTest).to.be.deep.equal([1, 2, 1])
+    })
+    it('multiple subscriptions of the same handler allowed', () => {
+      const e = new Event()
+      e.subscribe(f1, f2, f1, f1)
+      let arrTest = []
+      e.emit(arrTest)
+      expect(arrTest).to.be.deep.equal([1, 2, 1, 1])
+      e.unsubscribe(f1)
+      arrTest = []
+      e.emit(arrTest)
+      expect(arrTest).to.be.deep.equal([1, 2, 1])
+    })
+  })
+})
+
 describe('Test events (advanced tests)', () => {
   it('Shuould subscribe and unsubscribe', () => {
     function l(arr) {

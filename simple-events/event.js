@@ -8,7 +8,7 @@ function Event() {
       handlers = handlers.filter(handler => handler !== f)
     },
     emit() {
-      handlers.forEach(handler => handler.call(null, ...arguments))
+      handlers.forEach(handler => handler.call(this, ...arguments))
     }
   }
 }
