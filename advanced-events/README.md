@@ -24,7 +24,7 @@ which comply to the following:
 
 * handler functions can subscribe and unsubscribe handlers, but the changes should only apply to the next emit call - the handlers for an ongoing emit call should not be affected
 
-    * **subscribe**, **unsubscribe** and **emit** are the only public properties that are allowed on **event** objects (apart from Object.prototype methods)
+    * **subscribe**, **unsubscribe** and **emit** are the only public properties that are allowed on **event** objects (apart from `Object.prototype` methods)
 
 Check the test fixture for usage example
 
